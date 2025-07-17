@@ -9,42 +9,45 @@ import (
 	"strings"
 )
 
-func getName() (string, error) {
-	fmt.Print("Nama: ")
+var errInvalidName = errors.New("nama harus diisi")
+var errInvalidAge = errors.New("umur tidak valid (minimal 18 tahun)")
 
+func getInput(question string) string {
+	fmt.Print(question)
 	reader := bufio.NewReader(os.Stdin)
-	input, err := reader.ReadString('\n')
-
-	return input, err
-}
-
-func getAge() (int, error) {
-	fmt.Print("Umur: ")
-
-	reader := bufio.NewReader(os.Stdin)
-	input, err := reader.ReadString('\n')
+	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
-	inputInt, _ := strconv.Atoi(input)
-
-	return inputInt, err
+	return input
 }
 
-func checkAgeValidity(age int) bool {
-	return age >= 18
+func checkInputValidity(name string, age int) (bool, error) {
+	var errType error
+
+	if name == "" {
+		errType = errInvalidName
+	} else if age < 18 {
+		errType = errInvalidAge
+	}
+
+	var err error
+
+	if errType != nil {
+		err = fmt.Errorf("Error: %w", errType)
+	}
+
+	return errType == nil, err
 }
 
 func main() {
-	name, _ := getName()
-	age, _ := getAge()
+	name := getInput("Nama: ")
+	age, _ := strconv.Atoi(getInput("Umur: "))
 
-	isAgeValid := checkAgeValidity(age)
+	isValid, err := checkInputValidity(name, age)
 
-	if isAgeValid {
-		fmt.Printf("Selamat datang %s", name)
-	} else {
-		err := errors.New("umur tidak valid (minimal 18 tahun)")
-		err = fmt.Errorf("Error: %w", err)
+	if !isValid {
 		fmt.Println(err)
-		// log.WithError(err).Error(err)
+		return
 	}
+
+	fmt.Printf("Selamat datang %s", name)
 }
