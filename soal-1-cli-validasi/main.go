@@ -46,6 +46,14 @@ func main() {
 
 	if !isValid {
 		fmt.Println(err)
+
+		// // Jika menggunakan logrus (tapi format jadi tidak mirip soal):
+		// log.SetFormatter(&log.TextFormatter{
+		// 	DisableTimestamp: true,
+		// 	DisableQuote:     true,
+		// })
+		// log.WithError(err).Error()
+
 		return
 	}
 
