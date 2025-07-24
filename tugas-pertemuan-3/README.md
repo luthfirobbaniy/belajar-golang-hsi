@@ -1,4 +1,4 @@
-# Soal 1 CLI Validasi (Tugas Pekan 2)
+# Tugas Pertemuan 3
 
 This project is my answer for **Tugas Pertemuan 3** where we (the students) are asked to create a simple implementation of modular function, struct and interface.
 
