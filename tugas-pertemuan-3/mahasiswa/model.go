@@ -1,5 +1,9 @@
 package mahasiswa
 
+import (
+	"fmt"
+)
+
 type Mahasiswa struct {
 	Nama     string
 	Nilai    []int
@@ -14,7 +18,11 @@ type Deskripsi interface {
 }
 
 func (m Mahasiswa) Info() string {
-	return ""
+	return fmt.Sprintf(
+		"Nama: %s, Umur: %d",
+		m.Nama,
+		m.GetUmur(),
+	)
 }
 
 func (m Mahasiswa) RataRata(nilai ...int) float64 {

@@ -33,10 +33,9 @@ func main() {
 
 	// Print student information
 	for _, student := range students {
+		fmt.Println(student.Info())
 		fmt.Printf(
-			"Nama: %s, Umur: %d \nRata-rata nilai: %.2f \n--- \n",
-			student.Nama,
-			student.GetUmur(),
+			"Rata-rata nilai: %.2f \n--- \n",
 			student.RataRata(student.Nilai...),
 		)
 	}
