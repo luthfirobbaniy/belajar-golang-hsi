@@ -6,7 +6,7 @@ import (
 
 type Hasil struct {
 	gorm.Model
-	TugasID uint
+	TugasID uint `gorm:"unique"`
 	Nilai   int
 }
 
