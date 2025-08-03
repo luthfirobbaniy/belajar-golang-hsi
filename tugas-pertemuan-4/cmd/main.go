@@ -60,11 +60,11 @@ func main() {
 
 	var wg sync.WaitGroup
 
-	tugasChan := make(chan models.Tugas, 5)
-	assignmentResult := make(chan worker.Result, 5)
-
 	db.Find(&mahasiswa)
 	db.Find(&tugas)
+
+	tugasChan := make(chan models.Tugas, len(tugas))
+	assignmentResult := make(chan worker.Result, len(tugas))
 
 	for _, mahasiswa := range mahasiswa {
 		wg.Add(1)
@@ -86,7 +86,7 @@ func main() {
 
 	wg.Wait()
 
-	gradingResult := make(chan worker.Result, 5)
+	gradingResult := make(chan worker.Result, len(tugas))
 
 	for range tugas {
 		wg.Add(1)
