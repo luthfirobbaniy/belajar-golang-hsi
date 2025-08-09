@@ -18,7 +18,7 @@ func main() {
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{"localhost:9092"},
 		Topic:   "student.registration_validated",
-		GroupID: "academic-service-group-1",
+		GroupID: "academic-service-group",
 	})
 
 	defer reader.Close()

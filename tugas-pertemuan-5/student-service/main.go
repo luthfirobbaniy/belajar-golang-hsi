@@ -54,7 +54,7 @@ func main() {
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{"localhost:9092"},
 		Topic:   "student.registration_failed",
-		GroupID: "student-service-group-1",
+		GroupID: "student-service-group",
 	})
 
 	ctx, cancel := context.WithTimeout(
