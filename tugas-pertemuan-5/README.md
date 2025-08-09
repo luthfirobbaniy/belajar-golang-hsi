@@ -4,7 +4,7 @@ This project is my answer for **Tugas Pertemuan 5** where we (the students) are 
 
 ## How To Play
 
-1. Run the Docker compose using `docker compose up"
+1. Run the Docker compose using `docker compose up`
 
 2. Run `academic-service` and `finance-service` using `go run main.go`
 
