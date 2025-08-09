@@ -23,29 +23,23 @@ func main() {
 
 	defer reader.Close()
 
-	log.Println("Academic Service started..")
+	log.Println("[Academic Service] Started..")
 
 	for {
 		msg, err := reader.ReadMessage(context.Background()) // Check about context later
 
 		if err != nil {
-			log.Fatalf("Failed to read message: %v", err)
+			log.Fatalf("[Academic Service] Failed to read message: %v", err)
 		}
-
-		log.Printf("Receive an event: %s", string(msg.Value))
 
 		event := &Event{}
 
 		json.Unmarshal(msg.Value, event)
 
+		log.Printf("[Academic Service] Received event: %s, student_id: %s", event.Status, event.StudentId)
+
 		event.Status = "student.academic_initialized"
 
-		eventByte, err := json.Marshal(event)
-
-		if err != nil {
-			log.Fatalf("Failed to encode event to JSON: %v", err)
-		}
-
-		log.Printf("Event processed: %s", string(eventByte))
+		log.Printf("[Academic Service] Academic initialized for student_id: %s", event.StudentId)
 	}
 }

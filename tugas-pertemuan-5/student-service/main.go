@@ -16,6 +16,7 @@ type Event struct {
 }
 
 func main() {
+	// Publish to "student.registered"
 	writer := kafka.Writer{
 		Addr:  kafka.TCP("localhost:9092"),
 		Topic: "student.registered",
@@ -23,19 +24,19 @@ func main() {
 
 	defer writer.Close()
 
-	eventByte, eventByteErr := json.Marshal(Event{
-		StudentId: time.Now().Format(time.TimeOnly),
+	event := &Event{
+		StudentId: "1",
 		Name:      "Luthfi",
 		Status:    "student.registered",
-	})
-
-	if eventByteErr != nil {
-		log.Fatalf("Failed to read message: %v", eventByte)
 	}
 
-	log.Printf("Event Processed: %s", string(eventByte))
+	eventByte, err := json.Marshal(event)
 
-	err := writer.WriteMessages(
+	if err != nil {
+		log.Fatalf("[Student Service] Failed to read message: %v", eventByte)
+	}
+
+	writeMessageErr := writer.WriteMessages(
 		context.TODO(),
 		kafka.Message{
 			Key:   []byte("Key-1"),
@@ -43,10 +44,13 @@ func main() {
 		},
 	)
 
-	if err != nil {
-		log.Fatalf("Failed to write message: %v", err)
+	if writeMessageErr != nil {
+		log.Fatalf("[Student Service] Failed to write message: %v", writeMessageErr)
 	}
 
+	log.Printf("[Student Service] Sent event: %s", event.Status)
+
+	// Subscribe to student.registration_failed
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{"localhost:9092"},
 		Topic:   "student.registration_failed",
@@ -60,11 +64,11 @@ func main() {
 
 	defer cancel()
 
-	msg, err := reader.ReadMessage(ctx)
+	_, readMessageErr := reader.ReadMessage(ctx)
 
-	if err != nil {
-		log.Fatalf("Payment success!")
+	if readMessageErr != nil {
+		log.Fatalf("[Student Service] Payment success!")
 	}
 
-	log.Printf("Receive an event: %s", string(msg.Value))
+	log.Printf("[Student Service] Received event: %s, student_id: %s", event.Status, event.StudentId)
 }
