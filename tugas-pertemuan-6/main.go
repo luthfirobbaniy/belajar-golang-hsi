@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"time"
 	"tugas-pertemuan-6/models"
 
@@ -47,6 +48,13 @@ type GetStudentsResponse struct {
 	Data    []models.Student `json:"data"`
 }
 
+// @Description Get student response
+type GetStudentResponse struct {
+	Status  int            `json:"status" example:"200"`
+	Message string         `json:"message" example:"Get student successful!"`
+	Data    models.Student `json:"data"`
+}
+
 // @Description Error response
 type ErrorResponse struct {
 	Status  int    `json:"status" example:"1"`
@@ -70,6 +78,7 @@ func main() {
 
 	// Student Management Endpoints (Protected)
 	app.Get("/api/students", jwtMiddleware, getStudents)
+	app.Get("/api/students/:id", jwtMiddleware, getStudent)
 
 	app.Listen(":3000")
 }
@@ -207,7 +216,7 @@ func login(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} GetStudentsResponse "Profile retrieved successfully"
+// @Success 200 {object} GetStudentsResponse "Get students successful"
 // @Failure 401 {object} ErrorResponse "Authorization header required or Invalid token"
 // @Router /students [get]
 func getStudents(c *fiber.Ctx) error {
@@ -215,5 +224,50 @@ func getStudents(c *fiber.Ctx) error {
 		Status:  200,
 		Message: "Get students successful!",
 		Data:    students,
+	})
+}
+
+// getStudent godoc
+// @Summary Get one student
+// @Description Get one student data
+// @Tags Students
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Student id"
+// @Success 200 {object} GetStudentResponse "Get student successful"
+// @Failure 400 {object} ErrorResponse "Missing parameter"
+// @Failure 401 {object} ErrorResponse "Authorization header required or Invalid token"
+// @Failure 404 {object} ErrorResponse "Student not found"
+// @Router /students/{id} [get]
+func getStudent(c *fiber.Ctx) error {
+	if c.Params("id") == "" {
+		return c.Status(400).JSON(ErrorResponse{
+			Status:  400,
+			Message: "Missing parameter!",
+		})
+	}
+
+	var student models.Student
+	// student := &models.Student{}
+
+	for _, s := range students {
+		if id, _ := strconv.Atoi(c.Params("id")); s.ID == id {
+			student = s
+			break
+		}
+	}
+
+	if student.ID == 0 {
+		return c.Status(404).JSON(ErrorResponse{
+			Status:  404,
+			Message: "Student not found!",
+		})
+	}
+
+	return c.JSON(GetStudentResponse{
+		Status:  200,
+		Message: "Get student successful!",
+		Data:    student,
 	})
 }

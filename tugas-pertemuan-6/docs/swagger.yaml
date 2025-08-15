@@ -10,6 +10,18 @@ definitions:
         example: 1
         type: integer
     type: object
+  main.GetStudentResponse:
+    description: Get student response
+    properties:
+      data:
+        $ref: '#/definitions/models.Student'
+      message:
+        example: Get student successful!
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
   main.GetStudentsResponse:
     description: Get students response
     properties:
@@ -118,7 +130,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: Profile retrieved successfully
+          description: Get students successful
           schema:
             $ref: '#/definitions/main.GetStudentsResponse'
         "401":
@@ -128,6 +140,41 @@ paths:
       security:
       - BearerAuth: []
       summary: Get all student
+      tags:
+      - Students
+  /students/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get one student data
+      parameters:
+      - description: Student id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get student successful
+          schema:
+            $ref: '#/definitions/main.GetStudentResponse'
+        "400":
+          description: Missing parameter
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "401":
+          description: Authorization header required or Invalid token
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "404":
+          description: Student not found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get one student
       tags:
       - Students
 schemes:

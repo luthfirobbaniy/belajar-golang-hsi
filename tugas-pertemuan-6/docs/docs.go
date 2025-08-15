@@ -87,13 +87,68 @@ const docTemplate = `{
                 "summary": "Get all student",
                 "responses": {
                     "200": {
-                        "description": "Profile retrieved successfully",
+                        "description": "Get students successful",
                         "schema": {
                             "$ref": "#/definitions/main.GetStudentsResponse"
                         }
                     },
                     "401": {
                         "description": "Authorization header required or Invalid token",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get one student data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Get one student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Student id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get student successful",
+                        "schema": {
+                            "$ref": "#/definitions/main.GetStudentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Missing parameter",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization header required or Invalid token",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Student not found",
                         "schema": {
                             "$ref": "#/definitions/main.ErrorResponse"
                         }
@@ -114,6 +169,23 @@ const docTemplate = `{
                 "status": {
                     "type": "integer",
                     "example": 1
+                }
+            }
+        },
+        "main.GetStudentResponse": {
+            "description": "Get student response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Student"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Get student successful!"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
                 }
             }
         },
