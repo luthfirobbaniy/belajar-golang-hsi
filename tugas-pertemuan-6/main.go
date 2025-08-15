@@ -55,8 +55,25 @@ type GetStudentResponse struct {
 	Data    models.Student `json:"data"`
 }
 
+// @Description Create student request
+type CreateStudentRequest struct {
+	NIM      string `json:"nim" example:"2021003"`
+	Name     string `json:"name" example:"Budi"`
+	Email    string `json:"email" example:"budi@example.com"`
+	Major    string `json:"major" example:"Teknik Industri"`
+	Semester int    `json:"semester" example:"2"`
+}
+
+// @Description Create student response
+type CreateStudentResponse struct {
+	Success bool           `json:"success" example:"true"`
+	Message string         `json:"message" example:"Create student success!"`
+	Data    models.Student `json:"data"`
+}
+
 // @Description Error response
 type ErrorResponse struct {
+	Success bool   `json:"success" example:"false"`
 	Status  int    `json:"status" example:"1"`
 	Message string `json:"message" example:"Invalid request body"`
 }
@@ -79,6 +96,7 @@ func main() {
 	// Student Management Endpoints (Protected)
 	app.Get("/api/students", jwtMiddleware, getStudents)
 	app.Get("/api/students/:id", jwtMiddleware, getStudent)
+	app.Post("/api/students", jwtMiddleware, createStudent)
 
 	app.Listen(":3000")
 }
@@ -109,7 +127,7 @@ var users = []models.User{
 var students = []models.Student{
 	{
 		ID:       1,
-		NIM:      "MHS-1",
+		NIM:      "2021001",
 		Name:     "Luthfi",
 		Email:    "luthfi@example.com",
 		Major:    "Computer Science",
@@ -117,13 +135,15 @@ var students = []models.Student{
 	},
 	{
 		ID:       2,
-		NIM:      "MHS-2",
+		NIM:      "2021002",
 		Name:     "Ahmad",
 		Email:    "ahmad@example.com",
 		Major:    "Electrical Engineering",
 		Semester: 1,
 	},
 }
+
+var latestId = 2
 
 func jwtMiddleware(c *fiber.Ctx) error {
 	authHeader := c.Get("Authorization")
@@ -293,5 +313,46 @@ func getStudent(c *fiber.Ctx) error {
 		Status:  200,
 		Message: "Get student successful!",
 		Data:    student,
+	})
+}
+
+// createStudent godoc
+// @Summary Create student
+// @Description Create student
+// @Tags Students
+// @Accept json
+// @Produce json
+// @Param request body CreateStudentRequest true "Create student data"
+// @Success 200 {object} CreateStudentResponse "Create student successful"
+// @Failure 400 {object} ErrorResponse "Invalid request body"
+// @Failure 401 {object} ErrorResponse "Invalid credentials"
+// @Router /students [post]
+func createStudent(c *fiber.Ctx) error {
+	var body CreateStudentRequest
+
+	if err := c.BodyParser(&body); err != nil {
+		return c.Status(400).JSON(ErrorResponse{
+			Success: false,
+			Message: "",
+		})
+	}
+
+	latestId += 1
+
+	newStudent := models.Student{
+		ID:       latestId,
+		NIM:      body.NIM,
+		Name:     body.Name,
+		Email:    body.Email,
+		Major:    body.Major,
+		Semester: body.Semester,
+	}
+
+	students = append(students, newStudent)
+
+	return c.JSON(CreateStudentResponse{
+		Success: true,
+		Message: "Create student success!",
+		Data:    newStudent,
 	})
 }

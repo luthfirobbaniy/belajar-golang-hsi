@@ -1,5 +1,36 @@
 basePath: /api
 definitions:
+  main.CreateStudentRequest:
+    description: Create student request
+    properties:
+      email:
+        example: budi@example.com
+        type: string
+      major:
+        example: Teknik Industri
+        type: string
+      name:
+        example: Budi
+        type: string
+      nim:
+        example: "2021003"
+        type: string
+      semester:
+        example: 2
+        type: integer
+    type: object
+  main.CreateStudentResponse:
+    description: Create student response
+    properties:
+      data:
+        $ref: '#/definitions/models.Student'
+      message:
+        example: Create student success!
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
   main.ErrorResponse:
     description: Error response
     properties:
@@ -9,6 +40,9 @@ definitions:
       status:
         example: 1
         type: integer
+      success:
+        example: false
+        type: boolean
     type: object
   main.GetStudentResponse:
     description: Get student response
@@ -68,16 +102,21 @@ definitions:
   models.Student:
     properties:
       email:
+        example: budi@example.com
         type: string
       id:
         type: integer
       major:
+        example: Teknik Industri
         type: string
       name:
+        example: Budi
         type: string
       nim:
+        example: "2021003"
         type: string
       semester:
+        example: 2
         type: integer
     type: object
 host: localhost:3000
@@ -140,6 +179,35 @@ paths:
       security:
       - BearerAuth: []
       summary: Get all student
+      tags:
+      - Students
+    post:
+      consumes:
+      - application/json
+      description: Create student
+      parameters:
+      - description: Create student data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Create student successful
+          schema:
+            $ref: '#/definitions/main.CreateStudentResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Create student
       tags:
       - Students
   /students/{id}:

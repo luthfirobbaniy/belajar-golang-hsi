@@ -99,6 +99,50 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Create student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Create student",
+                "parameters": [
+                    {
+                        "description": "Create student data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.CreateStudentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create student successful",
+                        "schema": {
+                            "$ref": "#/definitions/main.CreateStudentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
             }
         },
         "/students/{id}": {
@@ -158,6 +202,49 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "main.CreateStudentRequest": {
+            "description": "Create student request",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "budi@example.com"
+                },
+                "major": {
+                    "type": "string",
+                    "example": "Teknik Industri"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Budi"
+                },
+                "nim": {
+                    "type": "string",
+                    "example": "2021003"
+                },
+                "semester": {
+                    "type": "integer",
+                    "example": 2
+                }
+            }
+        },
+        "main.CreateStudentResponse": {
+            "description": "Create student response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Student"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Create student success!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
         "main.ErrorResponse": {
             "description": "Error response",
             "type": "object",
@@ -169,6 +256,10 @@ const docTemplate = `{
                 "status": {
                     "type": "integer",
                     "example": 1
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
                 }
             }
         },
@@ -254,22 +345,27 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "budi@example.com"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "major": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Teknik Industri"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Budi"
                 },
                 "nim": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2021003"
                 },
                 "semester": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 }
             }
         }
