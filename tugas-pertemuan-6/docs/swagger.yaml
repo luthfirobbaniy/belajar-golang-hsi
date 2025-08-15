@@ -1,0 +1,90 @@
+basePath: /api
+definitions:
+  main.ErrorResponse:
+    properties:
+      message:
+        example: Invalid request body
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+  main.LoginData:
+    description: Login response data
+    properties:
+      token:
+        example: afasgssafsa
+        type: string
+    type: object
+  main.LoginRequest:
+    description: Login request payload
+    properties:
+      password:
+        example: "123"
+        type: string
+      username:
+        example: luthfi
+        type: string
+    type: object
+  main.LoginResponse:
+    description: Login response
+    properties:
+      data:
+        $ref: '#/definitions/main.LoginData'
+      message:
+        example: Invalid request body
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: Login response data
+  title: Sistem Manajemen Mahasiswa
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with static credentials and return JWT token
+      parameters:
+      - description: Login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/main.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            $ref: '#/definitions/main.LoginResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Failed to generate token
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: User login
+      tags:
+      - Authentication
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
