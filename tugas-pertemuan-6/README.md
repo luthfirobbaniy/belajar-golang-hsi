@@ -6,7 +6,7 @@
 2. Student Management Endpoints (Protected)
 - [X] `GET /api/students` - Get semua data mahasiswa
 - [X] `GET /api/students/:id` - Get data mahasiswa by ID
-- [ ] `POST /api/students` - Tambah mahasiswa baru
+- [X] `POST /api/students` - Tambah mahasiswa baru
 - [ ] `PUT /api/students/:id` - Update data mahasiswa
 - [ ] `DELETE /api/students/:id` - Hapus mahasiswa
 
