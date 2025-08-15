@@ -101,6 +101,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create student",
                 "consumes": [
                     "application/json"
@@ -253,10 +258,6 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Invalid request body"
                 },
-                "status": {
-                    "type": "integer",
-                    "example": 1
-                },
                 "success": {
                     "type": "boolean",
                     "example": false
@@ -274,9 +275,9 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Get student successful!"
                 },
-                "status": {
-                    "type": "integer",
-                    "example": 200
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -294,9 +295,9 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Get students successful!"
                 },
-                "status": {
-                    "type": "integer",
-                    "example": 200
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -335,9 +336,9 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Login successful!"
                 },
-                "status": {
-                    "type": "integer",
-                    "example": 200
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },

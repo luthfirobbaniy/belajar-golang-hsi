@@ -37,9 +37,6 @@ definitions:
       message:
         example: Invalid request body
         type: string
-      status:
-        example: 1
-        type: integer
       success:
         example: false
         type: boolean
@@ -52,9 +49,9 @@ definitions:
       message:
         example: Get student successful!
         type: string
-      status:
-        example: 200
-        type: integer
+      success:
+        example: true
+        type: boolean
     type: object
   main.GetStudentsResponse:
     description: Get students response
@@ -66,9 +63,9 @@ definitions:
       message:
         example: Get students successful!
         type: string
-      status:
-        example: 200
-        type: integer
+      success:
+        example: true
+        type: boolean
     type: object
   main.LoginData:
     description: Login response data
@@ -95,9 +92,9 @@ definitions:
       message:
         example: Login successful!
         type: string
-      status:
-        example: 200
-        type: integer
+      success:
+        example: true
+        type: boolean
     type: object
   models.Student:
     properties:
@@ -207,6 +204,8 @@ paths:
           description: Invalid credentials
           schema:
             $ref: '#/definitions/main.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create student
       tags:
       - Students

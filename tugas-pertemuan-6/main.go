@@ -31,7 +31,7 @@ type LoginRequest struct {
 
 // @Description Login response
 type LoginResponse struct {
-	Status  int       `json:"status" example:"200"`
+	Success bool      `json:"success" example:"true"`
 	Message string    `json:"message" example:"Login successful!"`
 	Data    LoginData `json:"data"`
 }
@@ -43,14 +43,14 @@ type LoginData struct {
 
 // @Description Get students response
 type GetStudentsResponse struct {
-	Status  int              `json:"status" example:"200"`
+	Success bool             `json:"success" example:"true"`
 	Message string           `json:"message" example:"Get students successful!"`
 	Data    []models.Student `json:"data"`
 }
 
 // @Description Get student response
 type GetStudentResponse struct {
-	Status  int            `json:"status" example:"200"`
+	Success bool           `json:"success" example:"true"`
 	Message string         `json:"message" example:"Get student successful!"`
 	Data    models.Student `json:"data"`
 }
@@ -74,7 +74,6 @@ type CreateStudentResponse struct {
 // @Description Error response
 type ErrorResponse struct {
 	Success bool   `json:"success" example:"false"`
-	Status  int    `json:"status" example:"1"`
 	Message string `json:"message" example:"Invalid request body"`
 }
 
@@ -149,8 +148,9 @@ func jwtMiddleware(c *fiber.Ctx) error {
 	authHeader := c.Get("Authorization")
 
 	if authHeader == "" {
-		return c.Status(401).JSON(fiber.Map{
-			"message": "Authorization header is required",
+		return c.Status(401).JSON(ErrorResponse{
+			Success: false,
+			Message: "Authorization header is required",
 		})
 	}
 
@@ -169,16 +169,18 @@ func jwtMiddleware(c *fiber.Ctx) error {
 	)
 
 	if err != nil || !token.Valid {
-		return c.Status(401).JSON(fiber.Map{
-			"error": "Invalid or expired token",
+		return c.Status(401).JSON(ErrorResponse{
+			Success: false,
+			Message: "Invalid or expired token",
 		})
 	}
 
 	claims, ok := token.Claims.(*Claims)
 
 	if !ok {
-		return c.Status(401).JSON(fiber.Map{
-			"message": "Invalid token claims",
+		return c.Status(401).JSON(ErrorResponse{
+			Success: false,
+			Message: "Invalid token claims",
 		})
 	}
 
@@ -203,9 +205,9 @@ func login(c *fiber.Ctx) error {
 	var req LoginRequest
 
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"status":  400,
-			"message": "Invalid request body",
+		return c.Status(400).JSON(ErrorResponse{
+			Success: false,
+			Message: "Invalid request body",
 		})
 	}
 
@@ -220,9 +222,9 @@ func login(c *fiber.Ctx) error {
 	}
 
 	if user.ID == 0 {
-		return c.Status(401).JSON(fiber.Map{
-			"status":  401,
-			"message": "Invalid credentials",
+		return c.Status(401).JSON(ErrorResponse{
+			Success: false,
+			Message: "Invalid credentials",
 		})
 	}
 
@@ -238,17 +240,17 @@ func login(c *fiber.Ctx) error {
 	tokenString, err := token.SignedString(jwtSecret)
 
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"status":  500,
-			"message": "Failed to generate token",
+		return c.Status(500).JSON(ErrorResponse{
+			Success: false,
+			Message: "Failed to generate token",
 		})
 	}
 
-	return c.JSON(fiber.Map{
-		"status":  200,
-		"message": "Login successful!",
-		"data": fiber.Map{
-			"token": tokenString,
+	return c.JSON(LoginResponse{
+		Success: true,
+		Message: "Login successful!",
+		Data: LoginData{
+			Token: tokenString,
 		},
 	})
 }
@@ -265,7 +267,7 @@ func login(c *fiber.Ctx) error {
 // @Router /students [get]
 func getStudents(c *fiber.Ctx) error {
 	return c.JSON(GetStudentsResponse{
-		Status:  200,
+		Success: true,
 		Message: "Get students successful!",
 		Data:    students,
 	})
@@ -287,7 +289,7 @@ func getStudents(c *fiber.Ctx) error {
 func getStudent(c *fiber.Ctx) error {
 	if c.Params("id") == "" {
 		return c.Status(400).JSON(ErrorResponse{
-			Status:  400,
+			Success: false,
 			Message: "Missing parameter!",
 		})
 	}
@@ -304,13 +306,13 @@ func getStudent(c *fiber.Ctx) error {
 
 	if student.ID == 0 {
 		return c.Status(404).JSON(ErrorResponse{
-			Status:  404,
+			Success: false,
 			Message: "Student not found!",
 		})
 	}
 
 	return c.JSON(GetStudentResponse{
-		Status:  200,
+		Success: true,
 		Message: "Get student successful!",
 		Data:    student,
 	})
