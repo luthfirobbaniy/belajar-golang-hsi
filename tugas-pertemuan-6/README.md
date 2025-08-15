@@ -4,7 +4,7 @@
 - [ ] `POST /api/auth/register` - Register user baru (opsional)
 
 2. Student Management Endpoints (Protected)
-- [ ] `GET /api/students` - Get semua data mahasiswa
+- [X] `GET /api/students` - Get semua data mahasiswa
 - [ ] `GET /api/students/:id` - Get data mahasiswa by ID
 - [ ] `POST /api/students` - Tambah mahasiswa baru
 - [ ] `PUT /api/students/:id` - Update data mahasiswa

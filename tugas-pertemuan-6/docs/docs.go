@@ -66,10 +66,45 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/students": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all student data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Get all student",
+                "responses": {
+                    "200": {
+                        "description": "Profile retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/main.GetStudentsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization header required or Invalid token",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "main.ErrorResponse": {
+            "description": "Error response",
             "type": "object",
             "properties": {
                 "message": {
@@ -82,13 +117,33 @@ const docTemplate = `{
                 }
             }
         },
+        "main.GetStudentsResponse": {
+            "description": "Get students response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Student"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Get students successful!"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
         "main.LoginData": {
             "description": "Login response data",
             "type": "object",
             "properties": {
                 "token": {
                     "type": "string",
-                    "example": "afasgssafsa"
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8"
                 }
             }
         },
@@ -115,11 +170,34 @@ const docTemplate = `{
                 },
                 "message": {
                     "type": "string",
-                    "example": "Invalid request body"
+                    "example": "Login successful!"
                 },
                 "status": {
                     "type": "integer",
-                    "example": 1
+                    "example": 200
+                }
+            }
+        },
+        "models.Student": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "major": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nim": {
+                    "type": "string"
+                },
+                "semester": {
+                    "type": "integer"
                 }
             }
         }
@@ -141,7 +219,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api",
 	Schemes:          []string{"http"},
 	Title:            "Sistem Manajemen Mahasiswa",
-	Description:      "Login response data",
+	Description:      "Error response",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

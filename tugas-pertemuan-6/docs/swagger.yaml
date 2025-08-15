@@ -1,6 +1,7 @@
 basePath: /api
 definitions:
   main.ErrorResponse:
+    description: Error response
     properties:
       message:
         example: Invalid request body
@@ -9,11 +10,25 @@ definitions:
         example: 1
         type: integer
     type: object
+  main.GetStudentsResponse:
+    description: Get students response
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Student'
+        type: array
+      message:
+        example: Get students successful!
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
   main.LoginData:
     description: Login response data
     properties:
       token:
-        example: afasgssafsa
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8
         type: string
     type: object
   main.LoginRequest:
@@ -32,16 +47,31 @@ definitions:
       data:
         $ref: '#/definitions/main.LoginData'
       message:
-        example: Invalid request body
+        example: Login successful!
         type: string
       status:
-        example: 1
+        example: 200
+        type: integer
+    type: object
+  models.Student:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      major:
+        type: string
+      name:
+        type: string
+      nim:
+        type: string
+      semester:
         type: integer
     type: object
 host: localhost:3000
 info:
   contact: {}
-  description: Login response data
+  description: Error response
   title: Sistem Manajemen Mahasiswa
   version: "1.0"
 paths:
@@ -79,6 +109,27 @@ paths:
       summary: User login
       tags:
       - Authentication
+  /students:
+    get:
+      consumes:
+      - application/json
+      description: Get all student data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profile retrieved successfully
+          schema:
+            $ref: '#/definitions/main.GetStudentsResponse'
+        "401":
+          description: Authorization header required or Invalid token
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all student
+      tags:
+      - Students
 schemes:
 - http
 securityDefinitions:

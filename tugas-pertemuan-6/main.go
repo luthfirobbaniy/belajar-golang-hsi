@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"time"
 	"tugas-pertemuan-6/models"
 
@@ -31,8 +30,8 @@ type LoginRequest struct {
 
 // @Description Login response
 type LoginResponse struct {
-	Status  int       `json:"status" example:"1"`
-	Message string    `json:"message" example:"Invalid request body"`
+	Status  int       `json:"status" example:"200"`
+	Message string    `json:"message" example:"Login successful!"`
 	Data    LoginData `json:"data"`
 }
 
@@ -41,6 +40,14 @@ type LoginData struct {
 	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8"`
 }
 
+// @Description Get students response
+type GetStudentsResponse struct {
+	Status  int              `json:"status" example:"200"`
+	Message string           `json:"message" example:"Get students successful!"`
+	Data    []models.Student `json:"data"`
+}
+
+// @Description Error response
 type ErrorResponse struct {
 	Status  int    `json:"status" example:"1"`
 	Message string `json:"message" example:"Invalid request body"`
@@ -61,6 +68,9 @@ func main() {
 	// Authentication Endpoints
 	app.Post("/api/auth/login", login)
 
+	// Student Management Endpoints (Protected)
+	app.Get("/api/students", jwtMiddleware, getStudents)
+
 	app.Listen(":3000")
 }
 
@@ -71,6 +81,67 @@ var user = models.User{
 	Username: "luthfi",
 	Password: "123",
 	Role:     "student",
+}
+
+var students = []models.Student{
+	{
+		ID:       1,
+		NIM:      "MHS-1",
+		Name:     "Luthfi",
+		Email:    "luthfi@example.com",
+		Major:    "Computer Science",
+		Semester: 1,
+	},
+	{
+		ID:       2,
+		NIM:      "MHS-2",
+		Name:     "Ahmad",
+		Email:    "ahmad@example.com",
+		Major:    "Electrical Engineering",
+		Semester: 1,
+	},
+}
+
+func jwtMiddleware(c *fiber.Ctx) error {
+	authHeader := c.Get("Authorization")
+
+	if authHeader == "" {
+		return c.Status(401).JSON(fiber.Map{
+			"message": "Authorization header is required",
+		})
+	}
+
+	var tokenString string
+
+	if len(authHeader) > 7 && authHeader[:7] == "Bearer " {
+		tokenString = authHeader[7:]
+	}
+
+	token, err := jwt.ParseWithClaims(
+		tokenString,
+		&Claims{},
+		func(t *jwt.Token) (any, error) {
+			return jwtSecret, nil
+		},
+	)
+
+	if err != nil || !token.Valid {
+		return c.Status(401).JSON(fiber.Map{
+			"error": "Invalid or expired token",
+		})
+	}
+
+	claims, ok := token.Claims.(*Claims)
+
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{
+			"message": "Invalid token claims",
+		})
+	}
+
+	c.Locals("username", claims.Username)
+
+	return c.Next()
 }
 
 // login godoc
@@ -114,7 +185,6 @@ func login(c *fiber.Ctx) error {
 	tokenString, err := token.SignedString(jwtSecret)
 
 	if err != nil {
-		log.Println(err)
 		return c.Status(500).JSON(fiber.Map{
 			"status":  500,
 			"message": "Failed to generate token",
@@ -123,9 +193,27 @@ func login(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"status":  200,
-		"message": "Login Successful!",
+		"message": "Login successful!",
 		"data": fiber.Map{
 			"token": tokenString,
 		},
+	})
+}
+
+// getStudents godoc
+// @Summary Get all student
+// @Description Get all student data
+// @Tags Students
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} GetStudentsResponse "Profile retrieved successfully"
+// @Failure 401 {object} ErrorResponse "Authorization header required or Invalid token"
+// @Router /students [get]
+func getStudents(c *fiber.Ctx) error {
+	return c.JSON(GetStudentsResponse{
+		Status:  200,
+		Message: "Get students successful!",
+		Data:    students,
 	})
 }
