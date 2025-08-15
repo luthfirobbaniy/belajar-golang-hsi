@@ -324,6 +324,7 @@ func getStudent(c *fiber.Ctx) error {
 // @Tags Students
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param request body CreateStudentRequest true "Create student data"
 // @Success 200 {object} CreateStudentResponse "Create student successful"
 // @Failure 400 {object} ErrorResponse "Invalid request body"
