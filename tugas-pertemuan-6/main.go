@@ -85,11 +85,25 @@ func main() {
 
 var jwtSecret = []byte("jwt-secret")
 
-var user = models.User{
-	ID:       1,
-	Username: "luthfi",
-	Password: "123",
-	Role:     "student",
+var users = []models.User{
+	{
+		ID:       1,
+		Username: "admin",
+		Password: "admin123",
+		Role:     "admin",
+	},
+	{
+		ID:       2,
+		Username: "student1",
+		Password: "student123",
+		Role:     "student",
+	},
+	{
+		ID:       3,
+		Username: "luthfi",
+		Password: "123",
+		Role:     "student",
+	},
 }
 
 var students = []models.Student{
@@ -175,7 +189,17 @@ func login(c *fiber.Ctx) error {
 		})
 	}
 
-	if req.Username != user.Username && req.Password != user.Password {
+	var user models.User
+
+	// Find user
+	for _, u := range users {
+		if req.Username == u.Username && req.Password == u.Password {
+			user = u
+			break
+		}
+	}
+
+	if user.ID == 0 {
 		return c.Status(401).JSON(fiber.Map{
 			"status":  401,
 			"message": "Invalid credentials",
