@@ -265,6 +265,53 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Delete student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Student id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update student successful",
+                        "schema": {
+                            "$ref": "#/definitions/main.DeleteStudentResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Student not found",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
             }
         }
     },
@@ -305,6 +352,22 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Create student success!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "main.DeleteStudentResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Student"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Delete student success!"
                 },
                 "success": {
                     "type": "boolean",
@@ -452,26 +515,27 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "budi@example.com"
+                    "example": "luthfi@example.com"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "major": {
                     "type": "string",
-                    "example": "Teknik Industri"
+                    "example": "Computer Science"
                 },
                 "name": {
                     "type": "string",
-                    "example": "Budi"
+                    "example": "Luthfi"
                 },
                 "nim": {
                     "type": "string",
-                    "example": "2021003"
+                    "example": "2021001"
                 },
                 "semester": {
                     "type": "integer",
-                    "example": 2
+                    "example": 1
                 }
             }
         }

@@ -31,6 +31,17 @@ definitions:
         example: true
         type: boolean
     type: object
+  main.DeleteStudentResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Student'
+      message:
+        example: Delete student success!
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
   main.ErrorResponse:
     description: Error response
     properties:
@@ -130,21 +141,22 @@ definitions:
   models.Student:
     properties:
       email:
-        example: budi@example.com
+        example: luthfi@example.com
         type: string
       id:
+        example: 1
         type: integer
       major:
-        example: Teknik Industri
+        example: Computer Science
         type: string
       name:
-        example: Budi
+        example: Luthfi
         type: string
       nim:
-        example: "2021003"
+        example: "2021001"
         type: string
       semester:
-        example: 2
+        example: 1
         type: integer
     type: object
 host: localhost:3000
@@ -241,6 +253,36 @@ paths:
       tags:
       - Students
   /students/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete student
+      parameters:
+      - description: Student id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update student successful
+          schema:
+            $ref: '#/definitions/main.DeleteStudentResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "404":
+          description: Student not found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete student
+      tags:
+      - Students
     get:
       consumes:
       - application/json

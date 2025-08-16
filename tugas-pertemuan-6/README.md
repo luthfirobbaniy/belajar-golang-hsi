@@ -8,7 +8,7 @@
 - [X] `GET /api/students/:id` - Get data mahasiswa by ID
 - [X] `POST /api/students` - Tambah mahasiswa baru
 - [X] `PUT /api/students/:id` - Update data mahasiswa
-- [ ] `DELETE /api/students/:id` - Hapus mahasiswa
+- [X] `DELETE /api/students/:id` - Hapus mahasiswa
 
 3. Profile Endpoint (Protected)
 - [ ] `GET /api/profile` - Get profile user yang sedang login

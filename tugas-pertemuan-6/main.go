@@ -87,6 +87,12 @@ type UpdateStudentResponse struct {
 	Data    models.Student `json:"data"`
 }
 
+type DeleteStudentResponse struct {
+	Success bool           `json:"success" example:"true"`
+	Message string         `json:"message" example:"Delete student success!"`
+	Data    models.Student `json:"data"`
+}
+
 // @Description Error response
 type ErrorResponse struct {
 	Success bool   `json:"success" example:"false"`
@@ -113,6 +119,7 @@ func main() {
 	app.Get("/api/students/:id", jwtMiddleware, getStudent)
 	app.Post("/api/students", jwtMiddleware, createStudent)
 	app.Put("/api/students/:id", jwtMiddleware, updateStudent)
+	app.Delete("/api/students/:id", jwtMiddleware, DeleteStudent)
 
 	app.Listen(":3000")
 }
@@ -439,6 +446,46 @@ func updateStudent(c *fiber.Ctx) error {
 	return c.JSON(UpdateStudentResponse{
 		Success: true,
 		Message: "Update student success!",
+		Data:    student,
+	})
+}
+
+// DeleteStudent godoc
+// @Summary Delete student
+// @Description Delete student
+// @Tags Students
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Student id"
+// @Success 200 {object} DeleteStudentResponse "Update student successful"
+// @Failure 401 {object} ErrorResponse "Invalid credentials"
+// @Failure 404 {object} ErrorResponse "Student not found"
+// @Router /students/{id} [delete]
+func DeleteStudent(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	var student models.Student
+
+	// Update student
+	for i := 0; i < len(students); i++ {
+		if id, _ := strconv.Atoi(id); students[i].ID == id {
+			student = students[i]
+			students = append(students[:i], students[i+1:]...)
+			break
+		}
+	}
+
+	if student.ID == 0 {
+		return c.Status(404).JSON(ErrorResponse{
+			Success: false,
+			Message: "Student not found!",
+		})
+	}
+
+	return c.JSON(DeleteStudentResponse{
+		Success: true,
+		Message: "Delete student success!",
 		Data:    student,
 	})
 }
