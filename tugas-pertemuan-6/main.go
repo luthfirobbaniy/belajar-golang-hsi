@@ -353,7 +353,7 @@ func createStudent(c *fiber.Ctx) error {
 	if err := c.BodyParser(&body); err != nil {
 		return c.Status(400).JSON(ErrorResponse{
 			Success: false,
-			Message: "",
+			Message: "Body parsing failed!",
 		})
 	}
 
