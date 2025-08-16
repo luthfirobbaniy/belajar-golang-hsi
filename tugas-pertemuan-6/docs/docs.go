@@ -175,13 +175,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Get students successful",
                         "schema": {
-                            "$ref": "#/definitions/main.GetStudentsResponse"
+                            "$ref": "#/definitions/models.GetStudentsResponse"
                         }
                     },
                     "401": {
                         "description": "Authorization header required or Invalid token",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -210,7 +210,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.CreateStudentRequest"
+                            "$ref": "#/definitions/models.CreateStudentRequest"
                         }
                     }
                 ],
@@ -218,19 +218,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Create student successful",
                         "schema": {
-                            "$ref": "#/definitions/main.CreateStudentResponse"
+                            "$ref": "#/definitions/models.CreateStudentResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid request body",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -267,25 +267,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Get student successful",
                         "schema": {
-                            "$ref": "#/definitions/main.GetStudentResponse"
+                            "$ref": "#/definitions/models.GetStudentResponse"
                         }
                     },
                     "400": {
                         "description": "Missing parameter",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Authorization header required or Invalid token",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Student not found",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -309,45 +309,45 @@ const docTemplate = `{
                 "summary": "Update student",
                 "parameters": [
                     {
-                        "description": "Update student data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/main.UpdateStudentRequest"
-                        }
-                    },
-                    {
                         "type": "integer",
                         "description": "Student id",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Update student data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateStudentRequest"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "Update student successful",
                         "schema": {
-                            "$ref": "#/definitions/main.UpdateStudentResponse"
+                            "$ref": "#/definitions/models.UpdateStudentResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid request body",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Student not found",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -382,19 +382,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Update student successful",
                         "schema": {
-                            "$ref": "#/definitions/main.DeleteStudentResponse"
+                            "$ref": "#/definitions/models.DeleteStudentResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Student not found",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -402,66 +402,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "main.CreateStudentRequest": {
-            "description": "Create student request",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "budi@example.com"
-                },
-                "major": {
-                    "type": "string",
-                    "example": "Teknik Industri"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "Budi"
-                },
-                "nim": {
-                    "type": "string",
-                    "example": "2021003"
-                },
-                "semester": {
-                    "type": "integer",
-                    "example": 2
-                }
-            }
-        },
-        "main.CreateStudentResponse": {
-            "description": "Create student response",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/models.Student"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Create student success!"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "main.DeleteStudentResponse": {
-            "description": "Delete student response",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/models.Student"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Delete student success!"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
         "main.ErrorResponse": {
             "description": "Error response",
             "type": "object",
@@ -493,43 +433,6 @@ const docTemplate = `{
                 }
             }
         },
-        "main.GetStudentResponse": {
-            "description": "Get student response",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/models.Student"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Get student successful!"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "main.GetStudentsResponse": {
-            "description": "Get students response",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Student"
-                    }
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Get students successful!"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
         "main.ProfileData": {
             "description": "Get profile response data",
             "type": "object",
@@ -545,34 +448,34 @@ const docTemplate = `{
                 }
             }
         },
-        "main.UpdateStudentRequest": {
-            "description": "Update student request",
+        "models.CreateStudentRequest": {
+            "description": "Create student request",
             "type": "object",
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "luthfi@example.com"
+                    "example": "budi@example.com"
                 },
                 "major": {
                     "type": "string",
-                    "example": "Computer Science"
+                    "example": "Teknik Industri"
                 },
                 "name": {
                     "type": "string",
-                    "example": "Luthfi Edited"
+                    "example": "Budi"
                 },
                 "nim": {
                     "type": "string",
-                    "example": "2021001"
+                    "example": "2021003"
                 },
                 "semester": {
                     "type": "integer",
-                    "example": 1
+                    "example": 2
                 }
             }
         },
-        "main.UpdateStudentResponse": {
-            "description": "Update student response",
+        "models.CreateStudentResponse": {
+            "description": "Create student response",
             "type": "object",
             "properties": {
                 "data": {
@@ -580,7 +483,24 @@ const docTemplate = `{
                 },
                 "message": {
                     "type": "string",
-                    "example": "Update student success!"
+                    "example": "Create student success!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "models.DeleteStudentResponse": {
+            "description": "Delete student response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Student"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Delete student success!"
                 },
                 "success": {
                     "type": "boolean",
@@ -599,6 +519,43 @@ const docTemplate = `{
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "models.GetStudentResponse": {
+            "description": "Get student response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Student"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Get student successful!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "models.GetStudentsResponse": {
+            "description": "Get students response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Student"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Get students successful!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -700,6 +657,49 @@ const docTemplate = `{
                 "semester": {
                     "type": "integer",
                     "example": 1
+                }
+            }
+        },
+        "models.UpdateStudentRequest": {
+            "description": "Update student request",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "luthfi@example.com"
+                },
+                "major": {
+                    "type": "string",
+                    "example": "Computer Science"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Luthfi Edited"
+                },
+                "nim": {
+                    "type": "string",
+                    "example": "2021001"
+                },
+                "semester": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "models.UpdateStudentResponse": {
+            "description": "Update student response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Student"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Update student success!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         }

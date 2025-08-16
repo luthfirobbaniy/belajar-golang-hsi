@@ -1,48 +1,5 @@
 basePath: /api
 definitions:
-  main.CreateStudentRequest:
-    description: Create student request
-    properties:
-      email:
-        example: budi@example.com
-        type: string
-      major:
-        example: Teknik Industri
-        type: string
-      name:
-        example: Budi
-        type: string
-      nim:
-        example: "2021003"
-        type: string
-      semester:
-        example: 2
-        type: integer
-    type: object
-  main.CreateStudentResponse:
-    description: Create student response
-    properties:
-      data:
-        $ref: '#/definitions/models.Student'
-      message:
-        example: Create student success!
-        type: string
-      success:
-        example: true
-        type: boolean
-    type: object
-  main.DeleteStudentResponse:
-    description: Delete student response
-    properties:
-      data:
-        $ref: '#/definitions/models.Student'
-      message:
-        example: Delete student success!
-        type: string
-      success:
-        example: true
-        type: boolean
-    type: object
   main.ErrorResponse:
     description: Error response
     properties:
@@ -65,32 +22,6 @@ definitions:
         example: true
         type: boolean
     type: object
-  main.GetStudentResponse:
-    description: Get student response
-    properties:
-      data:
-        $ref: '#/definitions/models.Student'
-      message:
-        example: Get student successful!
-        type: string
-      success:
-        example: true
-        type: boolean
-    type: object
-  main.GetStudentsResponse:
-    description: Get students response
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/models.Student'
-        type: array
-      message:
-        example: Get students successful!
-        type: string
-      success:
-        example: true
-        type: boolean
-    type: object
   main.ProfileData:
     description: Get profile response data
     properties:
@@ -101,32 +32,44 @@ definitions:
       username:
         type: string
     type: object
-  main.UpdateStudentRequest:
-    description: Update student request
+  models.CreateStudentRequest:
+    description: Create student request
     properties:
       email:
-        example: luthfi@example.com
+        example: budi@example.com
         type: string
       major:
-        example: Computer Science
+        example: Teknik Industri
         type: string
       name:
-        example: Luthfi Edited
+        example: Budi
         type: string
       nim:
-        example: "2021001"
+        example: "2021003"
         type: string
       semester:
-        example: 1
+        example: 2
         type: integer
     type: object
-  main.UpdateStudentResponse:
-    description: Update student response
+  models.CreateStudentResponse:
+    description: Create student response
     properties:
       data:
         $ref: '#/definitions/models.Student'
       message:
-        example: Update student success!
+        example: Create student success!
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  models.DeleteStudentResponse:
+    description: Delete student response
+    properties:
+      data:
+        $ref: '#/definitions/models.Student'
+      message:
+        example: Delete student success!
         type: string
       success:
         example: true
@@ -140,6 +83,32 @@ definitions:
         type: string
       success:
         example: false
+        type: boolean
+    type: object
+  models.GetStudentResponse:
+    description: Get student response
+    properties:
+      data:
+        $ref: '#/definitions/models.Student'
+      message:
+        example: Get student successful!
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  models.GetStudentsResponse:
+    description: Get students response
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Student'
+        type: array
+      message:
+        example: Get students successful!
+        type: string
+      success:
+        example: true
         type: boolean
     type: object
   models.LoginData:
@@ -213,6 +182,37 @@ definitions:
       semester:
         example: 1
         type: integer
+    type: object
+  models.UpdateStudentRequest:
+    description: Update student request
+    properties:
+      email:
+        example: luthfi@example.com
+        type: string
+      major:
+        example: Computer Science
+        type: string
+      name:
+        example: Luthfi Edited
+        type: string
+      nim:
+        example: "2021001"
+        type: string
+      semester:
+        example: 1
+        type: integer
+    type: object
+  models.UpdateStudentResponse:
+    description: Update student response
+    properties:
+      data:
+        $ref: '#/definitions/models.Student'
+      message:
+        example: Update student success!
+        type: string
+      success:
+        example: true
+        type: boolean
     type: object
 host: localhost:3000
 info:
@@ -321,11 +321,11 @@ paths:
         "200":
           description: Get students successful
           schema:
-            $ref: '#/definitions/main.GetStudentsResponse'
+            $ref: '#/definitions/models.GetStudentsResponse'
         "401":
           description: Authorization header required or Invalid token
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Get all student
@@ -341,22 +341,22 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/main.CreateStudentRequest'
+          $ref: '#/definitions/models.CreateStudentRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Create student successful
           schema:
-            $ref: '#/definitions/main.CreateStudentResponse'
+            $ref: '#/definitions/models.CreateStudentResponse'
         "400":
           description: Invalid request body
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "401":
           description: Invalid credentials
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Create student
@@ -379,15 +379,15 @@ paths:
         "200":
           description: Update student successful
           schema:
-            $ref: '#/definitions/main.DeleteStudentResponse'
+            $ref: '#/definitions/models.DeleteStudentResponse'
         "401":
           description: Invalid credentials
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "404":
           description: Student not found
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Delete student
@@ -409,19 +409,19 @@ paths:
         "200":
           description: Get student successful
           schema:
-            $ref: '#/definitions/main.GetStudentResponse'
+            $ref: '#/definitions/models.GetStudentResponse'
         "400":
           description: Missing parameter
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "401":
           description: Authorization header required or Invalid token
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "404":
           description: Student not found
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Get one student
@@ -432,36 +432,36 @@ paths:
       - application/json
       description: Update student
       parameters:
-      - description: Update student data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/main.UpdateStudentRequest'
       - description: Student id
         in: path
         name: id
         required: true
         type: integer
+      - description: Update student data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateStudentRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Update student successful
           schema:
-            $ref: '#/definitions/main.UpdateStudentResponse'
+            $ref: '#/definitions/models.UpdateStudentResponse'
         "400":
           description: Invalid request body
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "401":
           description: Invalid credentials
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "404":
           description: Student not found
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Update student
