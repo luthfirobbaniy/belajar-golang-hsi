@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.LoginRequest"
+                            "$ref": "#/definitions/models.LoginRequest"
                         }
                     }
                 ],
@@ -43,25 +43,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Login successful",
                         "schema": {
-                            "$ref": "#/definitions/main.LoginResponse"
+                            "$ref": "#/definitions/models.LoginResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid request body",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Failed to generate token",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -87,7 +87,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.RegisterRequest"
+                            "$ref": "#/definitions/models.RegisterRequest"
                         }
                     }
                 ],
@@ -95,25 +95,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Register successful",
                         "schema": {
-                            "$ref": "#/definitions/main.RegisterResponse"
+                            "$ref": "#/definitions/models.RegisterResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid request body",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Failed to generate token",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -530,47 +530,6 @@ const docTemplate = `{
                 }
             }
         },
-        "main.LoginData": {
-            "description": "Login response data",
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8"
-                }
-            }
-        },
-        "main.LoginRequest": {
-            "description": "Login request payload",
-            "type": "object",
-            "properties": {
-                "password": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "luthfi"
-                }
-            }
-        },
-        "main.LoginResponse": {
-            "description": "Login response",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/main.LoginData"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Login successful!"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
         "main.ProfileData": {
             "description": "Get profile response data",
             "type": "object",
@@ -583,37 +542,6 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
-                }
-            }
-        },
-        "main.RegisterRequest": {
-            "description": "Register response data",
-            "type": "object",
-            "properties": {
-                "password": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "luthfi"
-                }
-            }
-        },
-        "main.RegisterResponse": {
-            "description": "Register response data",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/main.LoginData"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Login successful!"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
                 }
             }
         },
@@ -653,6 +581,92 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Update student success!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "models.ErrorResponse": {
+            "description": "Error response",
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Invalid request body"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "models.LoginData": {
+            "description": "Login response data",
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8"
+                }
+            }
+        },
+        "models.LoginRequest": {
+            "description": "Login request payload",
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "luthfi"
+                }
+            }
+        },
+        "models.LoginResponse": {
+            "description": "Login response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.LoginData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Login successful!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "models.RegisterRequest": {
+            "description": "Register response data",
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "luthfi"
+                }
+            }
+        },
+        "models.RegisterResponse": {
+            "description": "Register response data",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.LoginData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Login successful!"
                 },
                 "success": {
                     "type": "boolean",

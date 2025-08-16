@@ -91,35 +91,6 @@ definitions:
         example: true
         type: boolean
     type: object
-  main.LoginData:
-    description: Login response data
-    properties:
-      token:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8
-        type: string
-    type: object
-  main.LoginRequest:
-    description: Login request payload
-    properties:
-      password:
-        example: "123"
-        type: string
-      username:
-        example: luthfi
-        type: string
-    type: object
-  main.LoginResponse:
-    description: Login response
-    properties:
-      data:
-        $ref: '#/definitions/main.LoginData'
-      message:
-        example: Login successful!
-        type: string
-      success:
-        example: true
-        type: boolean
-    type: object
   main.ProfileData:
     description: Get profile response data
     properties:
@@ -129,28 +100,6 @@ definitions:
         type: string
       username:
         type: string
-    type: object
-  main.RegisterRequest:
-    description: Register response data
-    properties:
-      password:
-        example: "123"
-        type: string
-      username:
-        example: luthfi
-        type: string
-    type: object
-  main.RegisterResponse:
-    description: Register response data
-    properties:
-      data:
-        $ref: '#/definitions/main.LoginData'
-      message:
-        example: Login successful!
-        type: string
-      success:
-        example: true
-        type: boolean
     type: object
   main.UpdateStudentRequest:
     description: Update student request
@@ -178,6 +127,67 @@ definitions:
         $ref: '#/definitions/models.Student'
       message:
         example: Update student success!
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  models.ErrorResponse:
+    description: Error response
+    properties:
+      message:
+        example: Invalid request body
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  models.LoginData:
+    description: Login response data
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8
+        type: string
+    type: object
+  models.LoginRequest:
+    description: Login request payload
+    properties:
+      password:
+        example: "123"
+        type: string
+      username:
+        example: luthfi
+        type: string
+    type: object
+  models.LoginResponse:
+    description: Login response
+    properties:
+      data:
+        $ref: '#/definitions/models.LoginData'
+      message:
+        example: Login successful!
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  models.RegisterRequest:
+    description: Register response data
+    properties:
+      password:
+        example: "123"
+        type: string
+      username:
+        example: luthfi
+        type: string
+    type: object
+  models.RegisterResponse:
+    description: Register response data
+    properties:
+      data:
+        $ref: '#/definitions/models.LoginData'
+      message:
+        example: Login successful!
         type: string
       success:
         example: true
@@ -222,26 +232,26 @@ paths:
         name: credentials
         required: true
         schema:
-          $ref: '#/definitions/main.LoginRequest'
+          $ref: '#/definitions/models.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Login successful
           schema:
-            $ref: '#/definitions/main.LoginResponse'
+            $ref: '#/definitions/models.LoginResponse'
         "400":
           description: Invalid request body
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "401":
           description: Invalid credentials
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "500":
           description: Failed to generate token
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       summary: User login
       tags:
       - Authentication
@@ -256,26 +266,26 @@ paths:
         name: credentials
         required: true
         schema:
-          $ref: '#/definitions/main.RegisterRequest'
+          $ref: '#/definitions/models.RegisterRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Register successful
           schema:
-            $ref: '#/definitions/main.RegisterResponse'
+            $ref: '#/definitions/models.RegisterResponse'
         "400":
           description: Invalid request body
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "401":
           description: Invalid credentials
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
         "500":
           description: Failed to generate token
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       summary: User register
       tags:
       - Authentication

@@ -34,11 +34,11 @@ var latestUserId = 2
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param credentials body LoginRequest true "Login credentials"
-// @Success 200 {object} LoginResponse "Login successful"
-// @Failure 400 {object} ErrorResponse "Invalid request body"
-// @Failure 401 {object} ErrorResponse "Invalid credentials"
-// @Failure 500 {object} ErrorResponse "Failed to generate token"
+// @Param credentials body models.LoginRequest true "Login credentials"
+// @Success 200 {object} models.LoginResponse "Login successful"
+// @Failure 400 {object} models.ErrorResponse "Invalid request body"
+// @Failure 401 {object} models.ErrorResponse "Invalid credentials"
+// @Failure 500 {object} models.ErrorResponse "Failed to generate token"
 // @Router /auth/login [post]
 func Login(c *fiber.Ctx) error {
 	var body models.LoginRequest
@@ -103,11 +103,11 @@ func Login(c *fiber.Ctx) error {
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param credentials body RegisterRequest true "Register credentials"
-// @Success 200 {object} RegisterResponse "Register successful"
-// @Failure 400 {object} ErrorResponse "Invalid request body"
-// @Failure 401 {object} ErrorResponse "Invalid credentials"
-// @Failure 500 {object} ErrorResponse "Failed to generate token"
+// @Param credentials body models.RegisterRequest true "Register credentials"
+// @Success 200 {object} models.RegisterResponse "Register successful"
+// @Failure 400 {object} models.ErrorResponse "Invalid request body"
+// @Failure 401 {object} models.ErrorResponse "Invalid credentials"
+// @Failure 500 {object} models.ErrorResponse "Failed to generate token"
 // @Router /auth/register [post]
 func Register(c *fiber.Ctx) error {
 	var body models.RegisterRequest
