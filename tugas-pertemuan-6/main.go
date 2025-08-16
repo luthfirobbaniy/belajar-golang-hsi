@@ -262,7 +262,7 @@ func login(c *fiber.Ctx) error {
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(400).JSON(ErrorResponse{
 			Success: false,
-			Message: "Invalid request body",
+			Message: "Invalid request body!",
 		})
 	}
 
@@ -279,7 +279,7 @@ func login(c *fiber.Ctx) error {
 	if user.ID == 0 {
 		return c.Status(401).JSON(ErrorResponse{
 			Success: false,
-			Message: "Invalid credentials",
+			Message: "Invalid credentials!",
 		})
 	}
 
@@ -299,7 +299,7 @@ func login(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(500).JSON(ErrorResponse{
 			Success: false,
-			Message: "Failed to generate token",
+			Message: "Failed to generate token!",
 		})
 	}
 
