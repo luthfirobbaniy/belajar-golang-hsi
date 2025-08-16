@@ -6,19 +6,21 @@ Go to `http://localhost:3000/swagger/index.html` to access Swagger
 
 ## Endpoints
 
-1. Authentication Endpoints
+### Authentication Endpoints
 
 - [X] `POST /api/auth/login` - Login user
 - [X] `POST /api/auth/register` - Register new user (optional)
 
-2. Student Management Endpoints (Protected)
+### Student Management Endpoints (Protected)
+
 - [X] `GET /api/students` - Get all students data
 - [X] `GET /api/students/:id` - Get student data by ID
 - [X] `POST /api/students` - Create new student data
 - [X] `PUT /api/students/:id` - Update student data
 - [X] `DELETE /api/students/:id` - Delete student
 
-3. Profile Endpoint (Protected)
+### Profile Endpoint (Protected)
+
 - [X] `GET /api/profile` - Get logged in user's profile
 
 ## App Architecture
