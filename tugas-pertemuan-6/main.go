@@ -71,6 +71,22 @@ type CreateStudentResponse struct {
 	Data    models.Student `json:"data"`
 }
 
+// @Description Update student request
+type UpdateStudentRequest struct {
+	NIM      string `json:"nim" example:"2021001"`
+	Name     string `json:"name" example:"Luthfi Edited"`
+	Email    string `json:"email" example:"luthfi@example.com"`
+	Major    string `json:"major" example:"Computer Science"`
+	Semester int    `json:"semester" example:"1"`
+}
+
+// @Description Update student response
+type UpdateStudentResponse struct {
+	Success bool           `json:"success" example:"true"`
+	Message string         `json:"message" example:"Update student success!"`
+	Data    models.Student `json:"data"`
+}
+
 // @Description Error response
 type ErrorResponse struct {
 	Success bool   `json:"success" example:"false"`
@@ -96,6 +112,7 @@ func main() {
 	app.Get("/api/students", jwtMiddleware, getStudents)
 	app.Get("/api/students/:id", jwtMiddleware, getStudent)
 	app.Post("/api/students", jwtMiddleware, createStudent)
+	app.Put("/api/students/:id", jwtMiddleware, updateStudent)
 
 	app.Listen(":3000")
 }
@@ -357,5 +374,71 @@ func createStudent(c *fiber.Ctx) error {
 		Success: true,
 		Message: "Create student success!",
 		Data:    newStudent,
+	})
+}
+
+// updateStudent godoc
+// @Summary Update student
+// @Description Update student
+// @Tags Students
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body UpdateStudentRequest true "Update student data"
+// @Param id path int true "Student id"
+// @Success 200 {object} UpdateStudentResponse "Update student successful"
+// @Failure 400 {object} ErrorResponse "Invalid request body"
+// @Failure 401 {object} ErrorResponse "Invalid credentials"
+// @Failure 404 {object} ErrorResponse "Student not found"
+// @Router /students/{id} [put]
+func updateStudent(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if id == "" {
+		return c.Status(400).JSON(ErrorResponse{
+			Success: false,
+			Message: "Missing parameter!",
+		})
+	}
+
+	var body UpdateStudentRequest
+
+	if err := c.BodyParser(&body); err != nil {
+		return c.Status(400).JSON(ErrorResponse{
+			Success: false,
+			Message: "Body parsing failed!",
+		})
+	}
+
+	var student models.Student
+
+	// Update student
+	for i := 0; i < len(students); i++ {
+		s := &students[i] // Biar data master bisa berubah
+
+		if id, _ := strconv.Atoi(id); students[i].ID == id {
+			s.NIM = body.NIM
+			s.Name = body.Name
+			s.Email = body.Email
+			s.Major = body.Major
+			s.Semester = body.Semester
+
+			student = *s
+
+			break
+		}
+	}
+
+	if student.ID == 0 {
+		return c.Status(404).JSON(ErrorResponse{
+			Success: false,
+			Message: "Student not found!",
+		})
+	}
+
+	return c.JSON(UpdateStudentResponse{
+		Success: true,
+		Message: "Update student success!",
+		Data:    student,
 	})
 }

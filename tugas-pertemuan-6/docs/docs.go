@@ -203,6 +203,68 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Update student",
+                "parameters": [
+                    {
+                        "description": "Update student data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.UpdateStudentRequest"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Student id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update student successful",
+                        "schema": {
+                            "$ref": "#/definitions/main.UpdateStudentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Student not found",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
             }
         }
     },
@@ -335,6 +397,49 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Login successful!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "main.UpdateStudentRequest": {
+            "description": "Update student request",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "luthfi@example.com"
+                },
+                "major": {
+                    "type": "string",
+                    "example": "Computer Science"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Luthfi Edited"
+                },
+                "nim": {
+                    "type": "string",
+                    "example": "2021001"
+                },
+                "semester": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "main.UpdateStudentResponse": {
+            "description": "Update student response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Student"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Update student success!"
                 },
                 "success": {
                     "type": "boolean",

@@ -96,6 +96,37 @@ definitions:
         example: true
         type: boolean
     type: object
+  main.UpdateStudentRequest:
+    description: Update student request
+    properties:
+      email:
+        example: luthfi@example.com
+        type: string
+      major:
+        example: Computer Science
+        type: string
+      name:
+        example: Luthfi Edited
+        type: string
+      nim:
+        example: "2021001"
+        type: string
+      semester:
+        example: 1
+        type: integer
+    type: object
+  main.UpdateStudentResponse:
+    description: Update student response
+    properties:
+      data:
+        $ref: '#/definitions/models.Student'
+      message:
+        example: Update student success!
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
   models.Student:
     properties:
       email:
@@ -242,6 +273,46 @@ paths:
       security:
       - BearerAuth: []
       summary: Get one student
+      tags:
+      - Students
+    put:
+      consumes:
+      - application/json
+      description: Update student
+      parameters:
+      - description: Update student data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.UpdateStudentRequest'
+      - description: Student id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update student successful
+          schema:
+            $ref: '#/definitions/main.UpdateStudentResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "404":
+          description: Student not found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update student
       tags:
       - Students
 schemes:
