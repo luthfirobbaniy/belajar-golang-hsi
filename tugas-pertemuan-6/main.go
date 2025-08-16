@@ -3,6 +3,7 @@ package main
 import (
 	"strconv"
 	"time"
+	"tugas-pertemuan-6/middleware"
 	"tugas-pertemuan-6/models"
 
 	"github.com/gofiber/fiber/v2"
@@ -146,14 +147,14 @@ func main() {
 	app.Post("/api/auth/register", register)
 
 	// Student Management Endpoints (Protected)
-	app.Get("/api/students", jwtMiddleware, getStudents)
-	app.Get("/api/students/:id", jwtMiddleware, getStudent)
-	app.Post("/api/students", jwtMiddleware, createStudent)
-	app.Put("/api/students/:id", jwtMiddleware, updateStudent)
-	app.Delete("/api/students/:id", jwtMiddleware, DeleteStudent)
+	app.Get("/api/students", middleware.JwtMiddleware, getStudents)
+	app.Get("/api/students/:id", middleware.JwtMiddleware, getStudent)
+	app.Post("/api/students", middleware.JwtMiddleware, createStudent)
+	app.Put("/api/students/:id", middleware.JwtMiddleware, updateStudent)
+	app.Delete("/api/students/:id", middleware.JwtMiddleware, DeleteStudent)
 
 	// Profile Endpoint
-	app.Get("/api/profile", jwtMiddleware, GetProfile)
+	app.Get("/api/profile", middleware.JwtMiddleware, GetProfile)
 
 	app.Listen(":3000")
 }
@@ -197,53 +198,6 @@ var students = []models.Student{
 var latestUserId = 2
 var latestStudentId = 2
 
-func jwtMiddleware(c *fiber.Ctx) error {
-	authHeader := c.Get("Authorization")
-
-	if authHeader == "" {
-		return c.Status(401).JSON(ErrorResponse{
-			Success: false,
-			Message: "Authorization header is required",
-		})
-	}
-
-	var tokenString string
-
-	if len(authHeader) > 7 && authHeader[:7] == "Bearer " {
-		tokenString = authHeader[7:]
-	}
-
-	token, err := jwt.ParseWithClaims(
-		tokenString,
-		&Claims{},
-		func(t *jwt.Token) (any, error) {
-			return jwtSecret, nil
-		},
-	)
-
-	if err != nil || !token.Valid {
-		return c.Status(401).JSON(ErrorResponse{
-			Success: false,
-			Message: "Invalid or expired token",
-		})
-	}
-
-	claims, ok := token.Claims.(*Claims)
-
-	if !ok {
-		return c.Status(401).JSON(ErrorResponse{
-			Success: false,
-			Message: "Invalid token claims",
-		})
-	}
-
-	c.Locals("id", claims.Id)
-	c.Locals("username", claims.Username)
-	c.Locals("role", claims.Role)
-
-	return c.Next()
-}
-
 // login godoc
 // @Summary User login
 // @Description Authenticate user with static credentials and return JWT token
@@ -276,6 +230,7 @@ func login(c *fiber.Ctx) error {
 		}
 	}
 
+	// If user not found
 	if user.ID == 0 {
 		return c.Status(401).JSON(ErrorResponse{
 			Success: false,
