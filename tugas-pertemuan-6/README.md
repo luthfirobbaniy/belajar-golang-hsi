@@ -1,7 +1,7 @@
 1. Authentication Endpoints
 
 - [X] `POST /api/auth/login` - Login user
-- [ ] `POST /api/auth/register` - Register user baru (opsional)
+- [X] `POST /api/auth/register` - Register user baru (opsional)
 
 2. Student Management Endpoints (Protected)
 - [X] `GET /api/students` - Get semua data mahasiswa

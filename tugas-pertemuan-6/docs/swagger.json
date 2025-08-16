@@ -64,6 +64,58 @@
                 }
             }
         },
+        "/auth/register": {
+            "post": {
+                "description": "Register new user and return JWT token for auto login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User register",
+                "parameters": [
+                    {
+                        "description": "Register credentials",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Register successful",
+                        "schema": {
+                            "$ref": "#/definitions/main.RegisterResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to generate token",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/profile": {
             "get": {
                 "security": [
@@ -528,6 +580,37 @@
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "main.RegisterRequest": {
+            "description": "Register response data",
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "luthfi"
+                }
+            }
+        },
+        "main.RegisterResponse": {
+            "description": "Register response data",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/main.LoginData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Login successful!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },

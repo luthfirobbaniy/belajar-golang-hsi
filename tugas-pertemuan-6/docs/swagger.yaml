@@ -130,6 +130,28 @@ definitions:
       username:
         type: string
     type: object
+  main.RegisterRequest:
+    description: Register response data
+    properties:
+      password:
+        example: "123"
+        type: string
+      username:
+        example: luthfi
+        type: string
+    type: object
+  main.RegisterResponse:
+    description: Register response data
+    properties:
+      data:
+        $ref: '#/definitions/main.LoginData'
+      message:
+        example: Login successful!
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
   main.UpdateStudentRequest:
     description: Update student request
     properties:
@@ -221,6 +243,40 @@ paths:
           schema:
             $ref: '#/definitions/main.ErrorResponse'
       summary: User login
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register new user and return JWT token for auto login
+      parameters:
+      - description: Register credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/main.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Register successful
+          schema:
+            $ref: '#/definitions/main.RegisterResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Failed to generate token
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: User register
       tags:
       - Authentication
   /profile:

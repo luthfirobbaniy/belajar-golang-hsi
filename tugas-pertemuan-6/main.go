@@ -41,6 +41,19 @@ type LoginData struct {
 	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8"`
 }
 
+// @Description Register response data
+type RegisterRequest struct {
+	Username string `json:"username" example:"luthfi"`
+	Password string `json:"password" example:"123"`
+}
+
+// @Description Register response data
+type RegisterResponse struct {
+	Success bool      `json:"success" example:"true"`
+	Message string    `json:"message" example:"Login successful!"`
+	Data    LoginData `json:"data"`
+}
+
 // @Description Get students response
 type GetStudentsResponse struct {
 	Success bool             `json:"success" example:"true"`
@@ -130,6 +143,7 @@ func main() {
 
 	// Authentication Endpoints
 	app.Post("/api/auth/login", login)
+	app.Post("/api/auth/register", register)
 
 	// Student Management Endpoints (Protected)
 	app.Get("/api/students", jwtMiddleware, getStudents)
@@ -159,12 +173,6 @@ var users = []models.User{
 		Password: "student123",
 		Role:     "student",
 	},
-	{
-		ID:       3,
-		Username: "luthfi",
-		Password: "123",
-		Role:     "student",
-	},
 }
 
 var students = []models.Student{
@@ -186,7 +194,8 @@ var students = []models.Student{
 	},
 }
 
-var latestId = 2
+var latestUserId = 2
+var latestStudentId = 2
 
 func jwtMiddleware(c *fiber.Ctx) error {
 	authHeader := c.Get("Authorization")
@@ -303,6 +312,79 @@ func login(c *fiber.Ctx) error {
 	})
 }
 
+// register godoc
+// @Summary User register
+// @Description Register new user and return JWT token for auto login
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param credentials body RegisterRequest true "Register credentials"
+// @Success 200 {object} RegisterResponse "Register successful"
+// @Failure 400 {object} ErrorResponse "Invalid request body"
+// @Failure 401 {object} ErrorResponse "Invalid credentials"
+// @Failure 500 {object} ErrorResponse "Failed to generate token"
+// @Router /auth/register [post]
+func register(c *fiber.Ctx) error {
+	var body RegisterRequest
+
+	if err := c.BodyParser(&body); err != nil {
+		return c.Status(400).JSON(ErrorResponse{
+			Success: false,
+			Message: "Invalid request body!",
+		})
+	}
+
+	// Validate username with registered usernames
+	for _, u := range users {
+		if body.Username == u.Username {
+			return c.Status(401).JSON(ErrorResponse{
+				Success: false,
+				Message: "Username has already exist!",
+			})
+		}
+	}
+
+	latestUserId += 1
+
+	newUser := models.User{
+		ID:       latestUserId,
+		Username: body.Username,
+		Password: body.Password,
+		Role:     "student", // Only accept "user" role for registration
+	}
+
+	// Store new user to db
+	users = append(users, newUser)
+
+	claims := Claims{
+		Id:       newUser.ID,
+		Username: newUser.Username,
+		Role:     newUser.Role,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(jwtSecret)
+
+	if err != nil {
+		return c.Status(500).JSON(ErrorResponse{
+			Success: false,
+			Message: "Failed to generate token!",
+		})
+	}
+
+	return c.JSON(RegisterResponse{
+		Success: true,
+		Message: "Register successful!",
+		Data: LoginData{
+			Token: tokenString,
+		},
+	})
+}
+
 // getStudents godoc
 // @Summary Get all student
 // @Description Get all student data
@@ -388,10 +470,10 @@ func createStudent(c *fiber.Ctx) error {
 		})
 	}
 
-	latestId += 1
+	latestUserId += 1
 
 	newStudent := models.Student{
-		ID:       latestId,
+		ID:       latestStudentId,
 		NIM:      body.NIM,
 		Name:     body.Name,
 		Email:    body.Email,
