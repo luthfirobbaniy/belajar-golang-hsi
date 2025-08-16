@@ -193,7 +193,6 @@ var students = []models.Student{
 	},
 }
 
-var latestUserId = 2
 var latestStudentId = 2
 
 // getStudents godoc
@@ -281,7 +280,7 @@ func createStudent(c *fiber.Ctx) error {
 		})
 	}
 
-	latestUserId += 1
+	latestStudentId += 1
 
 	newStudent := models.Student{
 		ID:       latestStudentId,
