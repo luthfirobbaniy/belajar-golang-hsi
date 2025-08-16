@@ -1,11 +1,5 @@
 package models
 
-// @Description Login request payload
-type LoginRequest struct {
-	Username string `json:"username" example:"luthfi"`
-	Password string `json:"password" example:"123"`
-}
-
 // @Description Login response
 type LoginResponse struct {
 	Success bool      `json:"success" example:"true"`
@@ -16,12 +10,6 @@ type LoginResponse struct {
 // @Description Login response data
 type LoginData struct {
 	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1dGhmaSIsImV4cCI6MTc1NTMzMTU5NiwiaWF0IjoxNzU1MjQ1MTk2fQ.7WktpMm0AyyfXUR5x68Om7Pps9uR1resDlh2bz9C_J8"`
-}
-
-// @Description Register response data
-type RegisterRequest struct {
-	Username string `json:"username" example:"luthfi"`
-	Password string `json:"password" example:"123"`
 }
 
 // @Description Register response data
@@ -45,29 +33,11 @@ type GetStudentResponse struct {
 	Data    Student `json:"data"`
 }
 
-// @Description Create student request
-type CreateStudentRequest struct {
-	NIM      string `json:"nim" example:"2021003"`
-	Name     string `json:"name" example:"Budi"`
-	Email    string `json:"email" example:"budi@example.com"`
-	Major    string `json:"major" example:"Teknik Industri"`
-	Semester int    `json:"semester" example:"2"`
-}
-
 // @Description Create student response
 type CreateStudentResponse struct {
 	Success bool    `json:"success" example:"true"`
 	Message string  `json:"message" example:"Create student success!"`
 	Data    Student `json:"data"`
-}
-
-// @Description Update student request
-type UpdateStudentRequest struct {
-	NIM      string `json:"nim" example:"2021001"`
-	Name     string `json:"name" example:"Luthfi Edited"`
-	Email    string `json:"email" example:"luthfi@example.com"`
-	Major    string `json:"major" example:"Computer Science"`
-	Semester int    `json:"semester" example:"1"`
 }
 
 // @Description Update student response
@@ -82,6 +52,20 @@ type DeleteStudentResponse struct {
 	Success bool    `json:"success" example:"true"`
 	Message string  `json:"message" example:"Delete student success!"`
 	Data    Student `json:"data"`
+}
+
+// @Description Get profile response
+type GetProfileResponse struct {
+	Success bool        `json:"success" example:"true"`
+	Message string      `json:"message" example:"Get profile success!"`
+	Data    ProfileData `json:"data"`
+}
+
+// @Description Get profile response data
+type ProfileData struct {
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
 }
 
 // @Description Error response

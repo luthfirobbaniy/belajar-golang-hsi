@@ -63,10 +63,7 @@ func GetStudents(c *fiber.Ctx) error {
 // @Router /students/{id} [get]
 func GetStudent(c *fiber.Ctx) error {
 	if c.Params("id") == "" {
-		return c.Status(400).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Missing parameter!",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "Missing parameter!")
 	}
 
 	var student models.Student
@@ -80,10 +77,7 @@ func GetStudent(c *fiber.Ctx) error {
 	}
 
 	if student.ID == 0 {
-		return c.Status(404).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Student not found!",
-		})
+		return fiber.NewError(fiber.StatusNotFound, "Student not found!")
 	}
 
 	return c.JSON(models.GetStudentResponse{
@@ -109,10 +103,7 @@ func CreateStudent(c *fiber.Ctx) error {
 	var body models.CreateStudentRequest
 
 	if err := c.BodyParser(&body); err != nil {
-		return c.Status(400).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Body parsing failed!",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "Body parsing failed!")
 	}
 
 	latestStudentId += 1
@@ -128,7 +119,7 @@ func CreateStudent(c *fiber.Ctx) error {
 
 	students = append(students, newStudent)
 
-	return c.JSON(models.CreateStudentResponse{
+	return c.Status(201).JSON(models.CreateStudentResponse{
 		Success: true,
 		Message: "Create student success!",
 		Data:    newStudent,
@@ -153,19 +144,13 @@ func UpdateStudent(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	if id == "" {
-		return c.Status(400).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Missing parameter!",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "Missing parameter!")
 	}
 
 	var body models.UpdateStudentRequest
 
 	if err := c.BodyParser(&body); err != nil {
-		return c.Status(400).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Body parsing failed!",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "Body parsing failed!")
 	}
 
 	var student models.Student
@@ -188,10 +173,7 @@ func UpdateStudent(c *fiber.Ctx) error {
 	}
 
 	if student.ID == 0 {
-		return c.Status(404).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Student not found!",
-		})
+		return fiber.NewError(fiber.StatusNotFound, "Student not found!")
 	}
 
 	return c.JSON(models.UpdateStudentResponse{
@@ -228,10 +210,7 @@ func DeleteStudent(c *fiber.Ctx) error {
 	}
 
 	if student.ID == 0 {
-		return c.Status(404).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Student not found!",
-		})
+		return fiber.NewError(fiber.StatusNotFound, "Student not found!")
 	}
 
 	return c.JSON(models.DeleteStudentResponse{

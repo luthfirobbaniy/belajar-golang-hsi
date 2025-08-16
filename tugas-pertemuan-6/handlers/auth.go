@@ -1,12 +1,10 @@
 package handlers
 
 import (
-	"time"
 	"tugas-pertemuan-6/models"
 	"tugas-pertemuan-6/utils"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
 
 	_ "tugas-pertemuan-6/docs"
 )
@@ -44,10 +42,7 @@ func Login(c *fiber.Ctx) error {
 	var body models.LoginRequest
 
 	if err := c.BodyParser(&body); err != nil {
-		return c.Status(400).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Invalid request body!",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid request body!")
 	}
 
 	var user models.User
@@ -62,30 +57,13 @@ func Login(c *fiber.Ctx) error {
 
 	// If user not found
 	if user.ID == 0 {
-		return c.Status(401).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Invalid credentials!",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid credentials!")
 	}
 
-	claims := utils.Claims{
-		Id:       user.ID,
-		Username: user.Username,
-		Role:     user.Role,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(utils.JwtSecret)
+	tokenString, err := utils.CreateJwt(&user)
 
 	if err != nil {
-		return c.Status(500).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Failed to generate token!",
-		})
+		return fiber.NewError(fiber.StatusInternalServerError, "Failed to generate token!")
 	}
 
 	return c.JSON(models.LoginResponse{
@@ -113,19 +91,13 @@ func Register(c *fiber.Ctx) error {
 	var body models.RegisterRequest
 
 	if err := c.BodyParser(&body); err != nil {
-		return c.Status(400).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Invalid request body!",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid request body!")
 	}
 
 	// Validate username with registered usernames
 	for _, u := range users {
 		if body.Username == u.Username {
-			return c.Status(401).JSON(models.ErrorResponse{
-				Success: false,
-				Message: "Username has already exist!",
-			})
+			return fiber.NewError(fiber.StatusBadRequest, "Username has already exist!")
 		}
 	}
 
@@ -141,27 +113,13 @@ func Register(c *fiber.Ctx) error {
 	// Store new user to db
 	users = append(users, newUser)
 
-	claims := utils.Claims{
-		Id:       newUser.ID,
-		Username: newUser.Username,
-		Role:     newUser.Role,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(utils.JwtSecret)
+	tokenString, err := utils.CreateJwt(&newUser)
 
 	if err != nil {
-		return c.Status(500).JSON(models.ErrorResponse{
-			Success: false,
-			Message: "Failed to generate token!",
-		})
+		return fiber.NewError(fiber.StatusInternalServerError, "Failed to generate token!")
 	}
 
-	return c.JSON(models.RegisterResponse{
+	return c.Status(201).JSON(models.RegisterResponse{
 		Success: true,
 		Message: "Register successful!",
 		Data: models.LoginData{

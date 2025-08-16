@@ -141,13 +141,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Get profile successful",
                         "schema": {
-                            "$ref": "#/definitions/main.GetProfileResponse"
+                            "$ref": "#/definitions/models.GetProfileResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -402,52 +402,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "main.ErrorResponse": {
-            "description": "Error response",
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Invalid request body"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": false
-                }
-            }
-        },
-        "main.GetProfileResponse": {
-            "description": "Get profile response",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/main.ProfileData"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Get profile success!"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "main.ProfileData": {
-            "description": "Get profile response data",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
         "models.CreateStudentRequest": {
             "description": "Create student request",
             "type": "object",
@@ -519,6 +473,23 @@ const docTemplate = `{
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "models.GetProfileResponse": {
+            "description": "Get profile response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.ProfileData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Get profile success!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -597,6 +568,21 @@ const docTemplate = `{
                 "success": {
                     "type": "boolean",
                     "example": true
+                }
+            }
+        },
+        "models.ProfileData": {
+            "description": "Get profile response data",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -721,7 +707,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api",
 	Schemes:          []string{"http"},
 	Title:            "Sistem Manajemen Mahasiswa",
-	Description:      "Error response",
+	Description:      "Sistem manajemen mahasiswa using Go Fiber",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

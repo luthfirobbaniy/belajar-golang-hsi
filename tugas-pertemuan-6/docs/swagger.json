@@ -4,7 +4,7 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "Error response",
+        "description": "Sistem manajemen mahasiswa using Go Fiber",
         "title": "Sistem Manajemen Mahasiswa",
         "contact": {},
         "version": "1.0"
@@ -138,13 +138,13 @@
                     "200": {
                         "description": "Get profile successful",
                         "schema": {
-                            "$ref": "#/definitions/main.GetProfileResponse"
+                            "$ref": "#/definitions/models.GetProfileResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid credentials",
                         "schema": {
-                            "$ref": "#/definitions/main.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -399,52 +399,6 @@
         }
     },
     "definitions": {
-        "main.ErrorResponse": {
-            "description": "Error response",
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Invalid request body"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": false
-                }
-            }
-        },
-        "main.GetProfileResponse": {
-            "description": "Get profile response",
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/main.ProfileData"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Get profile success!"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "main.ProfileData": {
-            "description": "Get profile response data",
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
         "models.CreateStudentRequest": {
             "description": "Create student request",
             "type": "object",
@@ -516,6 +470,23 @@
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "models.GetProfileResponse": {
+            "description": "Get profile response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.ProfileData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Get profile success!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -594,6 +565,21 @@
                 "success": {
                     "type": "boolean",
                     "example": true
+                }
+            }
+        },
+        "models.ProfileData": {
+            "description": "Get profile response data",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },

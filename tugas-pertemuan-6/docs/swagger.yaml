@@ -1,37 +1,5 @@
 basePath: /api
 definitions:
-  main.ErrorResponse:
-    description: Error response
-    properties:
-      message:
-        example: Invalid request body
-        type: string
-      success:
-        example: false
-        type: boolean
-    type: object
-  main.GetProfileResponse:
-    description: Get profile response
-    properties:
-      data:
-        $ref: '#/definitions/main.ProfileData'
-      message:
-        example: Get profile success!
-        type: string
-      success:
-        example: true
-        type: boolean
-    type: object
-  main.ProfileData:
-    description: Get profile response data
-    properties:
-      id:
-        type: integer
-      role:
-        type: string
-      username:
-        type: string
-    type: object
   models.CreateStudentRequest:
     description: Create student request
     properties:
@@ -83,6 +51,18 @@ definitions:
         type: string
       success:
         example: false
+        type: boolean
+    type: object
+  models.GetProfileResponse:
+    description: Get profile response
+    properties:
+      data:
+        $ref: '#/definitions/models.ProfileData'
+      message:
+        example: Get profile success!
+        type: string
+      success:
+        example: true
         type: boolean
     type: object
   models.GetStudentResponse:
@@ -139,6 +119,16 @@ definitions:
       success:
         example: true
         type: boolean
+    type: object
+  models.ProfileData:
+    description: Get profile response data
+    properties:
+      id:
+        type: integer
+      role:
+        type: string
+      username:
+        type: string
     type: object
   models.RegisterRequest:
     description: Register response data
@@ -217,7 +207,7 @@ definitions:
 host: localhost:3000
 info:
   contact: {}
-  description: Error response
+  description: Sistem manajemen mahasiswa using Go Fiber
   title: Sistem Manajemen Mahasiswa
   version: "1.0"
 paths:
@@ -300,11 +290,11 @@ paths:
         "200":
           description: Get profile successful
           schema:
-            $ref: '#/definitions/main.GetProfileResponse'
+            $ref: '#/definitions/models.GetProfileResponse'
         "401":
           description: Invalid credentials
           schema:
-            $ref: '#/definitions/main.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Get profile
