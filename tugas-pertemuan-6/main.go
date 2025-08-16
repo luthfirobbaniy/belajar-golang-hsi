@@ -257,9 +257,9 @@ func jwtMiddleware(c *fiber.Ctx) error {
 // @Failure 500 {object} ErrorResponse "Failed to generate token"
 // @Router /auth/login [post]
 func login(c *fiber.Ctx) error {
-	var req LoginRequest
+	var body LoginRequest
 
-	if err := c.BodyParser(&req); err != nil {
+	if err := c.BodyParser(&body); err != nil {
 		return c.Status(400).JSON(ErrorResponse{
 			Success: false,
 			Message: "Invalid request body!",
@@ -270,7 +270,7 @@ func login(c *fiber.Ctx) error {
 
 	// Find user
 	for _, u := range users {
-		if req.Username == u.Username && req.Password == u.Password {
+		if body.Username == u.Username && body.Password == u.Password {
 			user = u
 			break
 		}
