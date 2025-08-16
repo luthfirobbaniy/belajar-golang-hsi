@@ -147,14 +147,14 @@ func main() {
 	app.Post("/api/auth/register", register)
 
 	// Student Management Endpoints (Protected)
-	app.Get("/api/students", middleware.JwtMiddleware, getStudents)
-	app.Get("/api/students/:id", middleware.JwtMiddleware, getStudent)
-	app.Post("/api/students", middleware.JwtMiddleware, createStudent)
-	app.Put("/api/students/:id", middleware.JwtMiddleware, updateStudent)
-	app.Delete("/api/students/:id", middleware.JwtMiddleware, DeleteStudent)
+	app.Get("/api/students", middleware.Jwt, getStudents)
+	app.Get("/api/students/:id", middleware.Jwt, getStudent)
+	app.Post("/api/students", middleware.Jwt, createStudent)
+	app.Put("/api/students/:id", middleware.Jwt, updateStudent)
+	app.Delete("/api/students/:id", middleware.Jwt, DeleteStudent)
 
 	// Profile Endpoint
-	app.Get("/api/profile", middleware.JwtMiddleware, GetProfile)
+	app.Get("/api/profile", middleware.Jwt, GetProfile)
 
 	app.Listen(":3000")
 }

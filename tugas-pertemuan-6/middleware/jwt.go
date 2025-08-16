@@ -16,7 +16,7 @@ type Claims struct {
 
 var jwtSecret = []byte("jwt-secret")
 
-func JwtMiddleware(c *fiber.Ctx) error {
+func Jwt(c *fiber.Ctx) error {
 	authHeader := c.Get("Authorization")
 
 	if authHeader == "" {
