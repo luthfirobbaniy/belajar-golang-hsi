@@ -87,6 +87,7 @@ type UpdateStudentResponse struct {
 	Data    models.Student `json:"data"`
 }
 
+// @Description Delete student response
 type DeleteStudentResponse struct {
 	Success bool           `json:"success" example:"true"`
 	Message string         `json:"message" example:"Delete student success!"`
