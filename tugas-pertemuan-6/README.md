@@ -11,4 +11,4 @@
 - [X] `DELETE /api/students/:id` - Hapus mahasiswa
 
 3. Profile Endpoint (Protected)
-- [ ] `GET /api/profile` - Get profile user yang sedang login
+- [X] `GET /api/profile` - Get profile user yang sedang login

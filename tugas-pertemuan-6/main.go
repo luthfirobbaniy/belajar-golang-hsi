@@ -93,6 +93,20 @@ type DeleteStudentResponse struct {
 	Data    models.Student `json:"data"`
 }
 
+// @Description Get profile response
+type GetProfileResponse struct {
+	Success bool        `json:"success" example:"true"`
+	Message string      `json:"message" example:"Get profile success!"`
+	Data    ProfileData `json:"data"`
+}
+
+// @Description Get profile response data
+type ProfileData struct {
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
+}
+
 // @Description Error response
 type ErrorResponse struct {
 	Success bool   `json:"success" example:"false"`
@@ -100,7 +114,9 @@ type ErrorResponse struct {
 }
 
 type Claims struct {
+	Id       int    `json:"id"`
 	Username string `json:"username"`
+	Role     string `json:"role"`
 	jwt.RegisteredClaims
 }
 
@@ -120,6 +136,9 @@ func main() {
 	app.Post("/api/students", jwtMiddleware, createStudent)
 	app.Put("/api/students/:id", jwtMiddleware, updateStudent)
 	app.Delete("/api/students/:id", jwtMiddleware, DeleteStudent)
+
+	// Profile Endpoint
+	app.Get("/api/profile", jwtMiddleware, GetProfile)
 
 	app.Listen(":3000")
 }
@@ -208,7 +227,9 @@ func jwtMiddleware(c *fiber.Ctx) error {
 		})
 	}
 
+	c.Locals("id", claims.Id)
 	c.Locals("username", claims.Username)
+	c.Locals("role", claims.Role)
 
 	return c.Next()
 }
@@ -253,7 +274,9 @@ func login(c *fiber.Ctx) error {
 	}
 
 	claims := Claims{
-		Username: req.Username,
+		Id:       user.ID,
+		Username: user.Username,
+		Role:     user.Role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -487,5 +510,38 @@ func DeleteStudent(c *fiber.Ctx) error {
 		Success: true,
 		Message: "Delete student success!",
 		Data:    student,
+	})
+}
+
+// GetProfile godoc
+// @Summary Get profile
+// @Description Get profile
+// @Tags Profile
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} GetProfileResponse "Get profile successful"
+// @Failure 401 {object} ErrorResponse "Invalid credentials"
+// @Router /profile [get]
+func GetProfile(c *fiber.Ctx) error {
+	id := c.Locals("id")
+
+	var user models.User
+
+	// Find profile
+	for _, u := range users {
+		if u.ID == id {
+			user = u
+		}
+	}
+
+	return c.JSON(GetProfileResponse{
+		Success: true,
+		Message: "Get profile success!",
+		Data: ProfileData{
+			ID:       user.ID,
+			Username: user.Username,
+			Role:     user.Role,
+		},
 	})
 }

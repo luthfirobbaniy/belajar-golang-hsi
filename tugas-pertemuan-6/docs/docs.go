@@ -67,6 +67,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/profile": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get profile",
+                "responses": {
+                    "200": {
+                        "description": "Get profile successful",
+                        "schema": {
+                            "$ref": "#/definitions/main.GetProfileResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/students": {
             "get": {
                 "security": [
@@ -360,6 +394,7 @@ const docTemplate = `{
             }
         },
         "main.DeleteStudentResponse": {
+            "description": "Delete student response",
             "type": "object",
             "properties": {
                 "data": {
@@ -386,6 +421,23 @@ const docTemplate = `{
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "main.GetProfileResponse": {
+            "description": "Get profile response",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/main.ProfileData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Get profile success!"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -464,6 +516,21 @@ const docTemplate = `{
                 "success": {
                     "type": "boolean",
                     "example": true
+                }
+            }
+        },
+        "main.ProfileData": {
+            "description": "Get profile response data",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },

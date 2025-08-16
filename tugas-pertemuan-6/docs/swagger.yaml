@@ -32,6 +32,7 @@ definitions:
         type: boolean
     type: object
   main.DeleteStudentResponse:
+    description: Delete student response
     properties:
       data:
         $ref: '#/definitions/models.Student'
@@ -50,6 +51,18 @@ definitions:
         type: string
       success:
         example: false
+        type: boolean
+    type: object
+  main.GetProfileResponse:
+    description: Get profile response
+    properties:
+      data:
+        $ref: '#/definitions/main.ProfileData'
+      message:
+        example: Get profile success!
+        type: string
+      success:
+        example: true
         type: boolean
     type: object
   main.GetStudentResponse:
@@ -106,6 +119,16 @@ definitions:
       success:
         example: true
         type: boolean
+    type: object
+  main.ProfileData:
+    description: Get profile response data
+    properties:
+      id:
+        type: integer
+      role:
+        type: string
+      username:
+        type: string
     type: object
   main.UpdateStudentRequest:
     description: Update student request
@@ -200,6 +223,27 @@ paths:
       summary: User login
       tags:
       - Authentication
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Get profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get profile successful
+          schema:
+            $ref: '#/definitions/main.GetProfileResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get profile
+      tags:
+      - Profile
   /students:
     get:
       consumes:
