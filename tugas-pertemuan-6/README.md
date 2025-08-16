@@ -68,4 +68,4 @@ tugas-pertemuan-6/
 ```
 
 ## Swagger Screenshot
-![Swagger](/swagger-screenshot.png)
+![Swagger](swagger-screenshot.png)
