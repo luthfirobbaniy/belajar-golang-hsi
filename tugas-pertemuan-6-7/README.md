@@ -130,7 +130,7 @@ go tool cover -html=coverage.out -o coverage.html  # Generate coverage.html
 
 ## Testing Report
 
-[Click here!](/TESTING_REPORT.md)
+[Click here!](./TESTING_REPORT.md)
 
 ## Swagger Screenshot
-![Swagger](/swagger-screenshot.png)
+![Swagger](./swagger-screenshot.png)
