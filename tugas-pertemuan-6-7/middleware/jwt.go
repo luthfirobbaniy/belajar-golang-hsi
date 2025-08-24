@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"tugas-pertemuan-6/utils"
+	"tugas-pertemuan-7/utils"
 
 	"github.com/gofiber/fiber/v2"
 )

@@ -5,8 +5,9 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	_ "tugas-pertemuan-6/docs"
-	"tugas-pertemuan-6/models"
+	_ "tugas-pertemuan-7/docs"
+	"tugas-pertemuan-7/models"
+	"tugas-pertemuan-7/utils"
 )
 
 var students = []models.Student{
@@ -104,6 +105,18 @@ func CreateStudent(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "Body parsing failed!")
+	}
+
+	if !utils.ValidateEmail(body.Email) {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid email!")
+	}
+
+	if !utils.ValidateNIM(body.NIM) {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid NIM!")
+	}
+
+	if !utils.ValidateSemester(body.Semester) {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid Semester!")
 	}
 
 	latestStudentId += 1

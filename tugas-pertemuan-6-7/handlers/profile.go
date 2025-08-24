@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	"tugas-pertemuan-6/models"
+	"tugas-pertemuan-7/models"
 
 	"github.com/gofiber/fiber/v2"
 
-	_ "tugas-pertemuan-6/docs"
+	_ "tugas-pertemuan-7/docs"
 )
 
 // GetProfile godoc

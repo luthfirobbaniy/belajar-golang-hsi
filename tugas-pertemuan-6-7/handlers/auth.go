@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"tugas-pertemuan-6/models"
-	"tugas-pertemuan-6/utils"
+	"tugas-pertemuan-7/models"
+	"tugas-pertemuan-7/utils"
 
 	"github.com/gofiber/fiber/v2"
 
-	_ "tugas-pertemuan-6/docs"
+	_ "tugas-pertemuan-7/docs"
 )
 
 var users = []models.User{

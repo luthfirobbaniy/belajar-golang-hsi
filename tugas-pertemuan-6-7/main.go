@@ -1,9 +1,9 @@
 package main
 
 import (
-	"tugas-pertemuan-6/handlers"
-	"tugas-pertemuan-6/middleware"
-	"tugas-pertemuan-6/models"
+	"tugas-pertemuan-7/handlers"
+	"tugas-pertemuan-7/middleware"
+	"tugas-pertemuan-7/models"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -12,7 +12,7 @@ import (
 	"github.com/joho/godotenv"
 	fiberSwagger "github.com/swaggo/fiber-swagger"
 
-	_ "tugas-pertemuan-6/docs"
+	_ "tugas-pertemuan-7/docs"
 )
 
 // @title Sistem Manajemen Mahasiswa

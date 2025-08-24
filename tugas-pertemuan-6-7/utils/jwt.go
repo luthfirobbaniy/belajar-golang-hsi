@@ -3,13 +3,13 @@ package utils
 import (
 	"errors"
 	"os"
-	"tugas-pertemuan-6/models"
+	"tugas-pertemuan-7/models"
 
 	"github.com/golang-jwt/jwt/v5"
 
 	"time"
 
-	_ "tugas-pertemuan-6/docs"
+	_ "tugas-pertemuan-7/docs"
 )
 
 type Claims struct {
