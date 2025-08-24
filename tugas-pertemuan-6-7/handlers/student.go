@@ -166,6 +166,18 @@ func UpdateStudent(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Body parsing failed!")
 	}
 
+	if !utils.ValidateEmail(body.Email) {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid email!")
+	}
+
+	if !utils.ValidateNIM(body.NIM) {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid NIM!")
+	}
+
+	if !utils.ValidateSemester(body.Semester) {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid Semester!")
+	}
+
 	var student models.Student
 
 	// Update student
